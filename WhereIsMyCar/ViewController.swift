@@ -15,11 +15,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var latitude: UILabel!
     @IBOutlet weak var longitude: UILabel!
     @IBOutlet weak var altitude: UILabel!
+    @IBOutlet weak var setLocButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet weak var openMapsButton: UIButton!
     
     @IBOutlet weak var mapView: MKMapView!
     
     var locationManager: CLLocationManager = CLLocationManager()
-    var coorLat = 0.0, coorLong = 0.0
     
     /*
         Note: Default will go to didFailWithError unless you specify location in simulator:
@@ -32,7 +34,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    @IBAction func mainButton(sender: AnyObject) {
+    @IBAction func mainButton(sender: AnyObject) { //Set my Location - Button
         print("Button pressed!")
         print("Configuring CoreLocation...")
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -41,29 +43,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         print("Complete!")
         
+        setLocButton.hidden = true
+        openMapsButton.hidden = false
+        resetButton.hidden = false
     }
+
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [CLLocation]!) { //AnyObject->CLLocation
-        var latestLocation: CLLocation = locations[locations.count - 1] //AnyObject
+        let latestLocation: CLLocation = locations[locations.count - 1] //AnyObject
         
         print("Updating Location")
         
-        coorLat = latestLocation.coordinate.latitude
-        coorLong = latestLocation.coordinate.longitude
+        let coorLat = latestLocation.coordinate.latitude
+        let coorLong = latestLocation.coordinate.longitude
         latitude.text = String(format: "%.4f", coorLat)
         longitude.text = String(format: "%.4f", coorLong)
         altitude.text = String(format: "%.4f", latestLocation.altitude)
         
         let center = CLLocationCoordinate2D(latitude: latestLocation.coordinate.latitude, longitude: latestLocation.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
         
         /*
-        mapView.showsPointsOfInterest = true
-        mapView.showsBuildings = true
+        Change to:
+            1). Open in Maps
+            2). Reset
         */
         
+        let mk = MKPointAnnotation()
+        mk.coordinate = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
+        mapView.addAnnotation(mk)
+        
         mapView.mapType = MKMapType.Hybrid
-        mapView.showsUserLocation = true
+        //mapView.showsUserLocation = true
         mapView.setRegion(region, animated: true)
         
         locationManager.stopUpdatingLocation()
@@ -76,6 +87,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             print("didFailWithError")
             //NSLog("Error: %@", error)
     }
+    
+    
+    @IBAction func openInMaps(sender: AnyObject) {
+        print("Open in Maps pressed!")
+    }
+   
+    @IBAction func resetFunc(sender: AnyObject) {
+        print("Reset Button pressed!")
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
