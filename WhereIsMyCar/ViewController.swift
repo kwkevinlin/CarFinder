@@ -19,8 +19,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var locationManager: CLLocationManager = CLLocationManager()
-    var startLocation: CLLocation!
-    
     var coorLat = 0.0, coorLong = 0.0
     
     /*
@@ -41,7 +39,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        startLocation = nil
         print("Complete!")
         
     }
@@ -57,12 +54,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         longitude.text = String(format: "%.4f", coorLong)
         altitude.text = String(format: "%.4f", latestLocation.altitude)
         
-        var coords = CLLocationCoordinate2DMake(coorLat, coorLong)
-        
         let center = CLLocationCoordinate2D(latitude: latestLocation.coordinate.latitude, longitude: latestLocation.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
         
+        /*
+        mapView.showsPointsOfInterest = true
+        mapView.showsBuildings = true
+        */
+        
+        mapView.mapType = MKMapType.Hybrid
+        mapView.showsUserLocation = true
         mapView.setRegion(region, animated: true)
+        
+        locationManager.stopUpdatingLocation()
     
     }
 
