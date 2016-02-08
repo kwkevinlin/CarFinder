@@ -87,6 +87,7 @@
                         <outlet property="altitude" destination="2a8-o1-qqo" id="FMa-iN-5Hq"/>
                         <outlet property="latitude" destination="URH-DV-t6H" id="VlE-ii-Rmi"/>
                         <outlet property="longitude" destination="4dQ-Vg-edI" id="yYg-67-uUy"/>
+                        <outlet property="mapView" destination="9GD-Qi-3kK" id="Pci-D5-oia"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
