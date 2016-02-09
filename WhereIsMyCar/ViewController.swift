@@ -22,6 +22,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var locationManager: CLLocationManager = CLLocationManager()
+    var coorLat = 0.0, coorLong = 0.0
     
     /*
         Note: Default will go to didFailWithError unless you specify location in simulator:
@@ -54,13 +55,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         print("Updating Location")
         
-        let coorLat = latestLocation.coordinate.latitude
-        let coorLong = latestLocation.coordinate.longitude
+        coorLat = latestLocation.coordinate.latitude
+        coorLong = latestLocation.coordinate.longitude
         latitude.text = String(format: "%.4f", coorLat)
         longitude.text = String(format: "%.4f", coorLong)
         altitude.text = String(format: "%.4f", latestLocation.altitude)
         
-        let center = CLLocationCoordinate2D(latitude: latestLocation.coordinate.latitude, longitude: latestLocation.coordinate.longitude)
+        let center = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
         
         /*
@@ -92,6 +93,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func openInMaps(sender: AnyObject) {
         print("Open in Maps pressed!")
         
+        let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = "Your Parked Car"
+        mapItem.openInMapsWithLaunchOptions(nil)
         
     }
    
