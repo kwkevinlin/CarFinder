@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  WhereIsMyCar
 //
-//  Created by 1834 Software on 2/5/16.
-//  Copyright © 2016 1834 Software. All rights reserved.
+//  Created by Kevin Lin on 2/5/16.
+//  Copyright © 2016 Kevin Lin. All rights reserved.
 //
 
 import UIKit
@@ -91,6 +91,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func openInMaps(sender: AnyObject) {
         print("Open in Maps pressed!")
+        
+        
     }
    
     @IBAction func resetFunc(sender: AnyObject) {
