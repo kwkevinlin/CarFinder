@@ -66,13 +66,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         altitude.text = String(format: "%.4f", latestLocation.altitude)
         
         let center = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
         
-        if (resetBool == false) {
+        if (resetBool == false) { //When reset is pressed, a different mapView sequence is ran
             
             /*
-                When is this function called? Everytime locationManager is used? (ie. locationManager.requestWhenInUseAuthorization())
+            When is this function called? Everytime locationManager is used? (ie. locationManager.requestWhenInUseAuthorization())
             */
+            
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
             
             mk.coordinate = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
             mapView.addAnnotation(mk)
@@ -82,6 +83,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             mapView.setRegion(region, animated: true)
             
             locationManager.stopUpdatingLocation()
+            
         } else {
             
             print("Reset instance")
@@ -95,9 +97,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             mapView.mapType = MKMapType.Standard
             mapView.showsUserLocation = true
             
-            mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)), animated: true)
+            mapView.setRegion(MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.07, longitudeDelta: 0.07)), animated: true)
             
             //locationManager.stopUpdatingLocation()
+            
             //resetBool = false moved to mainButton so location will continue to update
 
         }
@@ -139,9 +142,5 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    //Make function to print when pressed
-    
-
-
 }
 
