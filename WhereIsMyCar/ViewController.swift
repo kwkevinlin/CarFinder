@@ -30,6 +30,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         Note: Default will go to didFailWithError unless you specify location in simulator:
         iOS Simulator, Debug -> Location -> Custom Location
         36.136111, -80.279462 for Q parking lot
+        Use  7   for demonstration (36.137)
     */
     
     override func viewDidLoad() {
@@ -65,6 +66,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         longitude.text = String(format: "%.4f", coorLong)
         altitude.text = String(format: "%.4f", latestLocation.altitude)
         
+        //Get current location
         let center = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
         
         if (resetBool == false) { //When reset is pressed, a different mapView sequence is ran
@@ -73,17 +75,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             When is this function called? Everytime locationManager is used? (ie. locationManager.requestWhenInUseAuthorization())
             */
             
+            //Center is the center of where mapview will zone in on, span is the degree of zoom the map will be displayed in
             let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
             
+            //mk declared as MKPointAnnotation above global. Adds annotation in current location (when set location button is pressed
             mk.coordinate = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
             mapView.addAnnotation(mk)
             
+            //SetRegion sets "center" (the middle-point of where mapview will display) and span to determine how much zoom (how much map to show). Animated will animate the transition of locations instead of just frame A to frame B. showsUserLocation needs to be false here because it is turned on in "else" statement below (when resetButton is pressed, where user's location is continuously tracked).
             mapView.mapType = MKMapType.Hybrid
             mapView.showsUserLocation = false
             mapView.setRegion(region, animated: true)
             
             locationManager.stopUpdatingLocation()
             
+            /*
+            var directionsRequest = MKDirectionsRequest()
+            let markTaipei = MKPlacemark(coordinate: CLLocationCoordinate2DMake(point1.coordinate.latitude, point1.coordinate.longitude), addressDictionary: nil)
+            let markChungli = MKPlacemark(coordinate: CLLocationCoordinate2DMake(point2.coordinate.latitude, point2.coordinate.longitude), addressDictionary: nil)
+            */
+
         } else {
             
             print("Reset instance")
@@ -97,6 +108,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             mapView.mapType = MKMapType.Standard
             mapView.showsUserLocation = true
             
+            //Refocus map to user's current location. Both "set my location" and "reset" button calls this function, thus the else statement and resetBool boolean
             mapView.setRegion(MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.07, longitudeDelta: 0.07)), animated: true)
             
             //locationManager.stopUpdatingLocation()
@@ -111,6 +123,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func openInMaps(sender: AnyObject) {
         print("Openning in Maps")
         
+        //Send coordinates and name to Apple Maps, then open
         let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), addressDictionary: nil)
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = "Your Parked Car"
@@ -120,6 +133,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
    
     @IBAction func resetFunc(sender: AnyObject) {
         print("Reset Button pressed!")
+        
+        //Reset to initial state (ie. if user accidentally presses "set my location" without wanting to. Resets everything except what mapview is showing, which now tracks the user's current location
         
         resetBool = true
         
