@@ -22,7 +22,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var locationManager: CLLocationManager = CLLocationManager()
+    var mk = MKPointAnnotation()
     var coorLat = 0.0, coorLong = 0.0
+    var resetBool = false
     
     /*
         Note: Default will go to didFailWithError unless you specify location in simulator:
@@ -38,6 +40,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func mainButton(sender: AnyObject) { //Set my Location - Button
         print("Button pressed!")
         print("Configuring CoreLocation...")
+        resetBool = false
+        
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -64,34 +68,45 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let center = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
         
-        /*
-        Change to:
-            1). Open in Maps
-            2). Reset
-        */
-        
-        let mk = MKPointAnnotation()
-        mk.coordinate = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
-        mapView.addAnnotation(mk)
-        
-        mapView.mapType = MKMapType.Hybrid
-        //mapView.showsUserLocation = true
-        mapView.setRegion(region, animated: true)
-        
-        locationManager.stopUpdatingLocation()
-    
-    }
+        if (resetBool == false) {
+            
+            /*
+                When is this function called? Everytime locationManager is used? (ie. locationManager.requestWhenInUseAuthorization())
+            */
+            
+            mk.coordinate = CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong)
+            mapView.addAnnotation(mk)
+            
+            mapView.mapType = MKMapType.Hybrid
+            mapView.showsUserLocation = false
+            mapView.setRegion(region, animated: true)
+            
+            locationManager.stopUpdatingLocation()
+        } else {
+            
+            print("Reset instance")
+            
+            setLocButton.hidden = false
+            openMapsButton.hidden = true
+            resetButton.hidden = true
+            
+            mapView.removeAnnotation(mk)
+            
+            mapView.mapType = MKMapType.Standard
+            mapView.showsUserLocation = true
+            
+            mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)), animated: true)
+            
+            //locationManager.stopUpdatingLocation()
+            //resetBool = false moved to mainButton so location will continue to update
 
+        }
     
-    func locationManager(manager: CLLocationManager!,
-        didFailWithError error: NSError!) {
-            print("didFailWithError")
-            //NSLog("Error: %@", error)
     }
     
     
     @IBAction func openInMaps(sender: AnyObject) {
-        print("Open in Maps pressed!")
+        print("Openning in Maps")
         
         let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), addressDictionary: nil)
         let mapItem = MKMapItem(placemark: placemark)
@@ -102,8 +117,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
    
     @IBAction func resetFunc(sender: AnyObject) {
         print("Reset Button pressed!")
+        
+        resetBool = true
+        
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
+        latitude.text = String("0.0000")
+        longitude.text = String("0.0000")
+        altitude.text = String("0.0000")
     }
 
+    func locationManager(manager: CLLocationManager!,
+        didFailWithError error: NSError!) {
+            //print("didFailWithError")
+            //NSLog("Error: %@", error)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

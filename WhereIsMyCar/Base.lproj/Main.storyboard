@@ -18,6 +18,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hXW-3e-psR">
                                 <rect key="frame" x="243" y="134" width="114" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Set my Location"/>
                                 <connections>
                                     <action selector="mainButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vgi-36-kT6"/>
@@ -64,6 +65,7 @@
                             </mapView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iho-yg-MQL">
                                 <rect key="frame" x="169" y="134" width="95" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Open in Maps"/>
                                 <connections>
                                     <action selector="openInMaps:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EDP-WN-IVZ"/>
@@ -71,13 +73,14 @@
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zlB-rQ-Z7S">
                                 <rect key="frame" x="355" y="134" width="39" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Reset"/>
                                 <connections>
                                     <action selector="resetFunc:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TIa-fX-jzm"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2a8-o1-qqo" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-203.5" id="37M-PD-0RH"/>
                             <constraint firstItem="4dQ-Vg-edI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="36" id="3mi-Ue-fee"/>
