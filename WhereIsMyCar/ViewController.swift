@@ -23,14 +23,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var locationManager: CLLocationManager = CLLocationManager()
     var mk = MKPointAnnotation()
-    var coorLat = 0.0, coorLong = 0.0, carLat = 0.0, carLong = 0.0
+    var coorLat = 0.0, coorLong = 0.0, carLat = 0.0, carLong = 0.0, oldLat = 0.0, oldLong = 0.0
     var setLocBool = false, resetBool = false
     var route: MKRoute?
     
     /*
         Note: Default will go to didFailWithError unless you specify location in simulator:
         iOS Simulator, Debug -> Location -> Custom Location
-        36.136111, -80.279462 for Q parking lot
+        36.1356, -80.279462 for Q parking lot
         Use  74   for demonstration (36.1374)
     */
     
@@ -70,14 +70,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             carLong = coorLong
             setLocBool = false
         }
+        let carCoords = CLLocationCoordinate2D(latitude: carLat, longitude: carLong)
         latitude.text = String(format: "%.4f", coorLat)
         longitude.text = String(format: "%.4f", coorLong)
         altitude.text = String(format: "%.4f", latestLocation.altitude)
         
-        //Get current location
-        let carCoords = CLLocationCoordinate2D(latitude: carLat, longitude: carLong)
         
         if (resetBool == false) { //When reset is pressed, a different mapView sequence is ran
+            
+            //If GPS does not move, don't need to update location and mapView
+            if (coorLat == oldLat && coorLong == oldLong) {
+                return
+            } else {
+                oldLat = coorLat
+                oldLong = coorLong
+            }
             
             /*
             When is this function called? Everytime locationManager is used? (ie. locationManager.requestWhenInUseAuthorization())
@@ -97,20 +104,44 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             //Adding walking directions on map after "Set my Location" enabled
             mapView.showsUserLocation = true
-            var directionsRequest = MKDirectionsRequest()
+            let directionsRequest = MKDirectionsRequest()
             let carLocation = MKPlacemark(coordinate: carCoords, addressDictionary: nil) //center = current location
-            var currentLocation = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), addressDictionary: nil)
+            let currentLocation = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), addressDictionary: nil)
             
             directionsRequest.source = MKMapItem(placemark: currentLocation)
             directionsRequest.destination = MKMapItem(placemark: carLocation)
             directionsRequest.transportType = MKDirectionsTransportType.Walking
             
-            var directions = MKDirections(request: directionsRequest)
+            let directions = MKDirections(request: directionsRequest)
             directions.calculateDirectionsWithCompletionHandler {
                 (response, error) -> Void in
                 if error == nil {
                     self.route = response!.routes[0] as? MKRoute
-                    self.mapView.addOverlay((self.route?.polyline)!)
+                    //Only if GPS location changes (user moves) do we add polyline
+                    if (self.carLat != self.coorLat || self.carLong != self.coorLong) {
+                        
+                        //self.mapView.removeOverlay((self.route?.polyline)!) // <-- not working, or too many?
+                        self.mapView.addOverlay((self.route?.polyline)!)
+                        
+                        //Also re-adjust center and spam so mapView will show complete polyline
+                        var regionRect = self.route?.polyline.boundingMapRect
+                        regionRect!.size.width += regionRect!.size.width * 0.67 //Space on right
+                        regionRect!.size.height += regionRect!.size.height * 0.5
+                        regionRect!.origin.x -= ((regionRect!.size.width) * 0.41) / 2 //Even out LR
+                        regionRect!.origin.y -= ((regionRect!.size.height) * 0.35) / 2
+                        
+                        self.mapView.setRegion(MKCoordinateRegionForMapRect(regionRect!), animated: true)
+                        
+                        /*
+                            Should this be in rendererForOverlay so it'll recenter every time user moves?
+                        
+                            BUG: 1. When showing polyline, if user (GPS) moves, mapView recenters to first destination. Want polyline instead
+                                 2. addOverlay does not replace, adds new overlay
+                        
+                            FIX: 1. Polyline recenter buffer larger
+                                 2. Add segment switch: http://www.raywenderlich.com/87008/overlay-views-mapkit-swift-tutorial
+                        */
+                    }
                 }
             }
             
@@ -119,19 +150,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 
         } else {
             
-            print("Reset instance")
-            
             setLocButton.hidden = false
             openMapsButton.hidden = true
             resetButton.hidden = true
             
             mapView.removeAnnotation(mk)
+            mapView.removeOverlay((route?.polyline)!)
             
             mapView.mapType = MKMapType.Standard
             mapView.showsUserLocation = true
             
             //Refocus map to user's current location. Both "set my location" and "reset" button calls this function, thus the else statement and resetBool boolean
             mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coorLat, longitude: coorLong), span: MKCoordinateSpan(latitudeDelta: 0.07, longitudeDelta: 0.07)), animated: true)
+            
+            //Re-enable locationManager to update location when resetBool = false
+            oldLat = 0.0
+            oldLong = 0.0
             
             //locationManager.stopUpdatingLocation()
             
@@ -143,11 +177,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         
-        print("RendererForOverLay")
-        
+        //print("RendererForOverLay")
         var myLineRenderer = MKPolylineRenderer(polyline: (route?.polyline)!)
         myLineRenderer.strokeColor = UIColor.blueColor()
         myLineRenderer.lineWidth = 3
+        
+        /*
+        //Now re-adjust center and spam so mapView will show complete polyline
+        var regionRect = route?.polyline.boundingMapRect
+        regionRect!.size.width += regionRect!.size.width * 0.25
+        regionRect!.size.height += regionRect!.size.height * 0.25
+        regionRect!.origin.x -= (regionRect!.size.width) * 0.25 / 2
+        regionRect!.origin.y -= (regionRect!.size.height) * 0.25 / 2
+        
+        mapView.setRegion(MKCoordinateRegionForMapRect(regionRect!), animated: true)
+        */
+        
         return myLineRenderer
     }
     

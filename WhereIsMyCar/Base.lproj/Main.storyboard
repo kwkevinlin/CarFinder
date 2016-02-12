@@ -60,9 +60,14 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9GD-Qi-3kK">
-                                <rect key="frame" x="20" y="197" width="560" height="388"/>
-                            </mapView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="B7S-dz-49m">
+                                <rect key="frame" x="25" y="197" width="555" height="388"/>
+                                <subviews>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9GD-Qi-3kK">
+                                        <rect key="frame" x="0.0" y="0.0" width="555" height="388"/>
+                                    </mapView>
+                                </subviews>
+                            </stackView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iho-yg-MQL">
                                 <rect key="frame" x="169" y="134" width="95" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -86,18 +91,18 @@
                             <constraint firstItem="4dQ-Vg-edI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="36" id="3mi-Ue-fee"/>
                             <constraint firstItem="hXW-3e-psR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7sG-bJ-Zid"/>
                             <constraint firstItem="iho-yg-MQL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-68" id="8CF-UO-NPA"/>
+                            <constraint firstItem="B7S-dz-49m" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="91" id="9dA-Qa-OtJ"/>
                             <constraint firstItem="2a8-o1-qqo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="36" id="Gjt-Ni-3qa"/>
                             <constraint firstItem="URH-DV-t6H" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-261.5" id="Ip0-pn-hEt"/>
-                            <constraint firstItem="9GD-Qi-3kK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="91" id="Tuf-0l-Sti"/>
                             <constraint firstItem="4dQ-Vg-edI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-232" id="WhV-Xv-v4Q"/>
                             <constraint firstItem="iho-yg-MQL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-151" id="Xtl-Vb-3tt"/>
                             <constraint firstItem="tvK-4O-Ha5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-46" id="Zyi-ws-k45"/>
                             <constraint firstItem="4Ao-IO-99r" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-232.5" id="cxy-FU-20F"/>
                             <constraint firstItem="tvK-4O-Ha5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-203.5" id="dED-1y-MDx"/>
                             <constraint firstItem="emE-4g-CLD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-47.5" id="fhO-0u-pGb"/>
+                            <constraint firstItem="B7S-dz-49m" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="2.5" id="fhm-hm-n04"/>
                             <constraint firstItem="zlB-rQ-Z7S" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-151" id="ns0-g0-bMx"/>
                             <constraint firstItem="4Ao-IO-99r" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-54.5" id="orh-sB-KPy"/>
-                            <constraint firstItem="9GD-Qi-3kK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ryp-ep-wtr"/>
                             <constraint firstItem="emE-4g-CLD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-261.5" id="s96-ma-JCB"/>
                             <constraint firstItem="zlB-rQ-Z7S" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="35" id="wMM-UB-WZT"/>
                             <constraint firstItem="URH-DV-t6H" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="36" id="y4d-P6-uUQ"/>
