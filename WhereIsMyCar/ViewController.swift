@@ -139,6 +139,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                                  2. addOverlay does not replace, adds new overlay
                         
                             FIX: 1. Label constraints
+                                 2. Segmented Control requires functions
                         */
                     }
                 }
