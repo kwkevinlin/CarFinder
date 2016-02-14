@@ -138,8 +138,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                             BUG: 1. When showing polyline, if user (GPS) moves, mapView recenters to first destination. Want polyline instead
                                  2. addOverlay does not replace, adds new overlay
                         
-                            FIX: 1. Polyline recenter buffer larger
-                                 2. Add segment switch: http://www.raywenderlich.com/87008/overlay-views-mapkit-swift-tutorial
+                            FIX: 1. Label constraints
                         */
                     }
                 }
