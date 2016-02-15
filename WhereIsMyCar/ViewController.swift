@@ -41,10 +41,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     @IBAction func mainButton(sender: AnyObject) { //Set my Location - Button
-        print("Button pressed!")
+        print("SetMyLoc pressed!")
         print("Configuring CoreLocation...")
         resetBool = false
         setLocBool = true
+        
+        mapView.mapType = MKMapType.Hybrid
+        segmentControl.selectedSegmentIndex = 1
         
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
@@ -99,8 +102,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             mapView.addAnnotation(mk)
             
             //SetRegion sets "center" (the middle-point of where mapview will display) and span to determine how much zoom (how much map to show). Animated will animate the transition of locations instead of just frame A to frame B. showsUserLocation needs to be false here because it is turned on in "else" statement below (when resetButton is pressed, where user's location is continuously tracked).
-            mapView.mapType = MKMapType.Hybrid
-            segmentControl.selectedSegmentIndex = 1
             //mapView.showsUserLocation = false
             mapView.setRegion(region, animated: true)
             
@@ -122,7 +123,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     //Only if GPS location changes (user moves) do we add polyline
                     if (self.carLat != self.coorLat || self.carLong != self.coorLong) {
                         
-                        //self.mapView.removeOverlay((self.route?.polyline)!) // <-- not working, or too many?
+                        //print("Overlays: ", self.mapView.overlays.count)
+                        if (self.mapView.overlays.count > 0) {
+                            self.mapView.removeOverlay(self.mapView.overlays[0])
+                        }
                         self.mapView.addOverlay((self.route?.polyline)!)
                         
                         //Also re-adjust center and spam so mapView will show complete polyline
@@ -137,11 +141,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         /*
                             Should this be in rendererForOverlay so it'll recenter every time user moves?
                         
-                            BUG: 1. When showing polyline, if user (GPS) moves, mapView recenters to first destination. Want polyline instead
-                                 2. addOverlay does not replace, adds new overlay
+                            BUG: 1. When showing polyline, if user (GPS) moves, mapView recenters weirdly sometimes.    
+                                    Is this still hapenning?
                         
                             FIX: 1. Label constraints
-                                 2. Segmented Control requires functions
                         */
                     }
                 }
@@ -159,8 +162,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             mapView.removeAnnotation(mk)
             mapView.removeOverlay((route?.polyline)!)
             
-            mapView.mapType = MKMapType.Standard
-            segmentControl.selectedSegmentIndex = 0
             mapView.showsUserLocation = true
             
             //Refocus map to user's current location. Both "set my location" and "reset" button calls this function, thus the else statement and resetBool boolean
@@ -182,26 +183,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         //print("RendererForOverLay")
         let myLineRenderer = MKPolylineRenderer(polyline: (route?.polyline)!)
+        //let myLineRenderer = MKPolylineRenderer(overlay: overlay)
         myLineRenderer.strokeColor = UIColor.blueColor()
         myLineRenderer.lineWidth = 3
-        
-        /*
-        //Now re-adjust center and spam so mapView will show complete polyline
-        var regionRect = route?.polyline.boundingMapRect
-        regionRect!.size.width += regionRect!.size.width * 0.25
-        regionRect!.size.height += regionRect!.size.height * 0.25
-        regionRect!.origin.x -= (regionRect!.size.width) * 0.25 / 2
-        regionRect!.origin.y -= (regionRect!.size.height) * 0.25 / 2
-        
-        mapView.setRegion(MKCoordinateRegionForMapRect(regionRect!), animated: true)
-        */
         
         return myLineRenderer
     }
     
     
     @IBAction func openInMaps(sender: AnyObject) {
-        print("Openning in Maps")
+        print("Opening in Maps...")
         
         //Send coordinates and name to Apple Maps, then open
         let placemark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: carLat, longitude: carLong), addressDictionary: nil)
@@ -212,11 +203,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
    
     @IBAction func resetFunc(sender: AnyObject) {
-        print("Reset Button pressed!")
+        print("Resetting map...")
         
-        //Reset to initial state (ie. if user accidentally presses "set my location" without wanting to. Resets everything except what mapview is showing, which now tracks the user's current location
+        //Reset to initial state (ie. if user accidentally presses "set my location" without wanting to. Resets everything except what mapview is showing, which now zooms out and tracks the user's current location
         
         resetBool = true
+        
+        mapView.mapType = MKMapType.Standard
+        segmentControl.selectedSegmentIndex = 0
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()

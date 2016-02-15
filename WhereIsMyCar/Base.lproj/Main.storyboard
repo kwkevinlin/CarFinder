@@ -113,7 +113,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
                                 <items>
                                     <navigationItem prompt=" " id="Gc4-dg-BS6">
-                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" id="qsK-Uc-nDc">
+                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="qsK-Uc-nDc">
                                             <rect key="frame" x="205" y="37" width="191" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
