@@ -121,6 +121,9 @@
                                                 <segment title="Hybrid"/>
                                                 <segment title="Satellite"/>
                                             </segments>
+                                            <connections>
+                                                <action selector="segmentCtrlFunc:" destination="BYZ-38-t0r" eventType="valueChanged" id="rZz-cx-ef0"/>
+                                            </connections>
                                         </segmentedControl>
                                     </navigationItem>
                                 </items>
@@ -177,6 +180,7 @@
                         <outlet property="mapView" destination="9GD-Qi-3kK" id="Pci-D5-oia"/>
                         <outlet property="openMapsButton" destination="iho-yg-MQL" id="aYj-N3-Op2"/>
                         <outlet property="resetButton" destination="zlB-rQ-Z7S" id="Xac-WM-sJZ"/>
+                        <outlet property="segmentControl" destination="qsK-Uc-nDc" id="L6t-eY-QEQ"/>
                         <outlet property="setLocButton" destination="hXW-3e-psR" id="LtD-YL-DRP"/>
                     </connections>
                 </viewController>

@@ -20,6 +20,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBOutlet weak var openMapsButton: UIButton!
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     
     var locationManager: CLLocationManager = CLLocationManager()
     var mk = MKPointAnnotation()
@@ -99,6 +100,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             //SetRegion sets "center" (the middle-point of where mapview will display) and span to determine how much zoom (how much map to show). Animated will animate the transition of locations instead of just frame A to frame B. showsUserLocation needs to be false here because it is turned on in "else" statement below (when resetButton is pressed, where user's location is continuously tracked).
             mapView.mapType = MKMapType.Hybrid
+            segmentControl.selectedSegmentIndex = 1
             //mapView.showsUserLocation = false
             mapView.setRegion(region, animated: true)
             
@@ -158,6 +160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             mapView.removeOverlay((route?.polyline)!)
             
             mapView.mapType = MKMapType.Standard
+            segmentControl.selectedSegmentIndex = 0
             mapView.showsUserLocation = true
             
             //Refocus map to user's current location. Both "set my location" and "reset" button calls this function, thus the else statement and resetBool boolean
@@ -222,6 +225,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         longitude.text = String("0.0000")
         altitude.text = String("0.0000")
     }
+    
+    @IBAction func segmentCtrlFunc(sender: AnyObject) {
+        
+        switch (segmentControl.selectedSegmentIndex) {
+        case 0:
+            mapView.mapType = MKMapType.Standard
+        case 1:
+            mapView.mapType = MKMapType.Hybrid
+        case 2:
+            mapView.mapType = MKMapType.Satellite
+        default:
+            print("Error in mapType switch - Segment Control!")
+        }
+    }
+    
 
     func locationManager(manager: CLLocationManager!,
         didFailWithError error: NSError!) {
