@@ -58,8 +58,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
 
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [CLLocation]!) { //AnyObject->CLLocation
-        var latestLocation: CLLocation = locations[locations.count - 1] //AnyObject
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) { //AnyObject->CLLocation
+        let latestLocation: CLLocation = locations[locations.count - 1] //AnyObject
         
         //print("Updating Location")
         mapView.delegate = self
@@ -118,7 +118,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             directions.calculateDirectionsWithCompletionHandler {
                 (response, error) -> Void in
                 if error == nil {
-                    self.route = response!.routes[0] as? MKRoute
+                    self.route = response!.routes[0] as MKRoute
                     //Only if GPS location changes (user moves) do we add polyline
                     if (self.carLat != self.coorLat || self.carLong != self.coorLong) {
                         
@@ -178,10 +178,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     }
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         
         //print("RendererForOverLay")
-        var myLineRenderer = MKPolylineRenderer(polyline: (route?.polyline)!)
+        let myLineRenderer = MKPolylineRenderer(polyline: (route?.polyline)!)
         myLineRenderer.strokeColor = UIColor.blueColor()
         myLineRenderer.lineWidth = 3
         
@@ -241,8 +241,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
 
-    func locationManager(manager: CLLocationManager!,
-        didFailWithError error: NSError!) {
+    func locationManager(manager: CLLocationManager,
+        didFailWithError error: NSError) {
             //print("didFailWithError")
             //NSLog("Error: %@", error)
     }
