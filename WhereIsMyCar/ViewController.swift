@@ -76,9 +76,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             setLocBool = false
         }
         let carCoords = CLLocationCoordinate2D(latitude: carLat, longitude: carLong)
-        latitude.text = String(format: "%.4f", coorLat)
-        longitude.text = String(format: "%.4f", coorLong)
-        altitude.text = String(format: "%.4f", latestLocation.altitude)        
         
         if (resetBool == false) { //When reset is pressed, a different mapView sequence is ran
             
@@ -88,6 +85,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             } else {
                 oldLat = coorLat
                 oldLong = coorLong
+                latitude.text = String(format: "%.4f", coorLat)
+                longitude.text = String(format: "%.4f", coorLong)
+                altitude.text = String(format: "%.4f", latestLocation.altitude)
             }
             
             /*
