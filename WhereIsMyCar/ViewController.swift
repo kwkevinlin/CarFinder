@@ -33,6 +33,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         iOS Simulator, Debug -> Location -> Custom Location
         36.1356, -80.279462 for road beside Q lot
         Use  74   for demonstration (36.1374)
+        Or   92   for demonstration (36.1392)
     */
     
     override func viewDidLoad() {
@@ -77,8 +78,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let carCoords = CLLocationCoordinate2D(latitude: carLat, longitude: carLong)
         latitude.text = String(format: "%.4f", coorLat)
         longitude.text = String(format: "%.4f", coorLong)
-        altitude.text = String(format: "%.4f", latestLocation.altitude)
-        
+        altitude.text = String(format: "%.4f", latestLocation.altitude)        
         
         if (resetBool == false) { //When reset is pressed, a different mapView sequence is ran
             
