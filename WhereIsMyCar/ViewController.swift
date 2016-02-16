@@ -145,6 +145,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         
                             Note: 1. When showing polyline, if user (GPS) moves, mapView recenters weirdly
                                       sometimes. Is this still hapenning?
+                                  2. Polyline recenters map when a new polyline is regenerated. That means
+                                      if user decides to change the map (ie. zoom out, look at a different
+                                      location), they won't be able to do so because the map will recenter
+                                      itself once the GPS coordinates are changed.
                         */
                     }
                 }
