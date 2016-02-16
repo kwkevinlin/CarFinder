@@ -31,7 +31,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     /*
         Note: Default will go to didFailWithError unless you specify location in simulator:
         iOS Simulator, Debug -> Location -> Custom Location
-        36.1356, -80.279462 for Q parking lot
+        36.1356, -80.279462 for road beside Q lot
         Use  74   for demonstration (36.1374)
     */
     
@@ -139,12 +139,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                         self.mapView.setRegion(MKCoordinateRegionForMapRect(regionRect!), animated: true)
                         
                         /*
-                            Should this be in rendererForOverlay so it'll recenter every time user moves?
+                            BUG:  None!
                         
-                            BUG: 1. When showing polyline, if user (GPS) moves, mapView recenters weirdly sometimes.    
-                                    Is this still hapenning?
+                            FIX:  1. Label constraints
                         
-                            FIX: 1. Label constraints
+                            Note: 1. When showing polyline, if user (GPS) moves, mapView recenters weirdly
+                                      sometimes. Is this still hapenning?
                         */
                     }
                 }
@@ -221,6 +221,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     @IBAction func segmentCtrlFunc(sender: AnyObject) {
+        
+        //Change mapType in mapView when selected. Two other mapType changes are present, one when mainButton (setMyLoc) is pressed, and other when resetButton is pressed.
         
         switch (segmentControl.selectedSegmentIndex) {
         case 0:
