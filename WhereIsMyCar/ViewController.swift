@@ -24,7 +24,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var locationManager: CLLocationManager = CLLocationManager()
     var mk = MKPointAnnotation()
-    var coorLat = 0.0, coorLong = 0.0, carLat = 0.0, carLong = 0.0, oldLat = 0.0, oldLong = 0.0
+    var coorLat = 0.0, coorLong = 0.0, carLat = 0.0, carLong = 0.0, carAlt = 0.0, oldLat = 0.0, oldLong = 0.0
     var setLocBool = false, resetBool = false
     var route: MKRoute?
     
@@ -73,6 +73,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if (setLocBool == true) {
             carLat = coorLat
             carLong = coorLong
+            carAlt = latestLocation.altitude
             setLocBool = false
         }
         let carCoords = CLLocationCoordinate2D(latitude: carLat, longitude: carLong)
@@ -85,9 +86,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             } else {
                 oldLat = coorLat
                 oldLong = coorLong
-                latitude.text = String(format: "%.4f", coorLat)
-                longitude.text = String(format: "%.4f", coorLong)
-                altitude.text = String(format: "%.4f", latestLocation.altitude)
+                latitude.text = String(format: "%.4f", carLat)
+                longitude.text = String(format: "%.4f", carLong)
+                altitude.text = String(format: "%.4f", carAlt)
             }
             
             /*
